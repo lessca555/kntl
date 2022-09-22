@@ -48,12 +48,12 @@ class PelanggaranController extends Controller
         $request->validate([
             'nomor' => 'required',
             'nama' => 'required',
-            'point' => 'required'
+            // 'point' => 'required'
         ]);
         Pelanggaran::create([
             'nomor' => $request->nomor,
             'nama' => $request->nama,
-            'point' => $request->point
+            // 'point' => $request->point
         ]);
         return redirect()->route('pelanggaran-siswa');
     }
@@ -96,12 +96,12 @@ class PelanggaranController extends Controller
             'id' => 'required',
             'nomor' => 'required',
             'nama' => 'required',
-            'point' => 'required'
+            // 'point' => 'required'
         ]);
         Pelanggaran::where('id', $request->id)->update([
             'nomor' => $request->nomor,
             'nama' => $request->nama,
-            'point' => $request->point
+            // 'point' => $request->point
         ]);
         return redirect()->route('pelanggaran-siswa');
     }

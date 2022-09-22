@@ -35,10 +35,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/data-siswa', [SiswaController::class, 'index'])->name('data-siswa');
         Route::get('/admin/data-siswa/tambah', [SiswaController::class, 'create'])->name('tambah-siswa');
         Route::post('/admin/data-siswa/tambah', [SiswaController::class, 'store'])->name('store-siswa');
-        Route::get('/admin/siswa/edit/{lo:name}', [SiswaController::class, 'edit']);
+        Route::get('/admin/siswa/edit/{lo:id}', [SiswaController::class, 'edit']);
         Route::post('/admin/siswa/edit/', [SiswaController::class, 'update'])->name('update-siswa');
         Route::get('/admin/siswa/delete/{data:id}', [SiswaController::class, 'destroy']);
         Route::get('/admin/siswa/export', [SiswaController::class, 'export_excel'])->name('export-siswa');
+        Route::get('/admin/siswa/import', [SiswaController::class, 'view_import'])->name('view-import-siswa');
         Route::post('/admin/siswa/import', [SiswaController::class, 'import_excel'])->name('import-siswa');
         // pelanggaran
         Route::get('/admin/pelanggaran', [PelanggaranController::class, 'index'])->name('pelanggaran-siswa');
@@ -48,6 +49,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/pelanggaran/edit', [PelanggaranController::class, 'update'])->name('update-pelanggaran');
         Route::get('/admin/pelanggaran/hapus/{pela:id}', [PelanggaranController::class, 'destroy']);
         Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
+    });
+    Route::middleware(['role:siswa'])->group(function () {
+        Route::get('/dashboard', [LoginController::class, 'dashmin'])->name('dashmin');
+        Route::get('/profile', [LoginController::class, 'profile'])->name('profile');
+        Route::post('/profile', [LoginController::class, 'update_profile'])->name('update-profile');
     });
     // Route::get('/admin/dashboard', [LoginController::class, 'dashmin'])->name('dashmin');
     //     Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');

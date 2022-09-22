@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Kelas;
-use App\Models\gambarqr;
-use Milon\Barcode\DNS2D;
-// use BaconQrCode\Encoder\QrCode;
 use Webpatser\Uuid\Uuid;
+use App\Models\PointSiswa;
 use App\Models\Pelanggaran;
 
 use App\Exports\SiswaExport;
@@ -15,11 +13,13 @@ use App\Imports\SiswaImport;
 // use Maatwebsite\Excel\Excel;
 use Illuminate\Http\Request;
 
+use App\Models\PelanggaranSiswa;
 use Illuminate\Routing\Controller;
 use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Contracts\Role;
+use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SiswaController extends Controller
@@ -69,52 +69,11 @@ class SiswaController extends Controller
             'name' => 'required',
             'kelas' => 'required',
             'jk' => 'required',
-            'pelanggaran' => 'nullable',
+            'pelanggaran' => ['nullable', 'array'],
+            'pelanggaran.*' => ['nullable', 'string'],
+            'point' => ['nullable', 'array'],
+            'point.*' => ['nullable', 'string'],
         ]);
-        // if ($request->nisn == $halah->nisn) {
-        //     User::where('nisn', $request->nisn)->update([
-        //         'user_uuid' => Uuid::generate(4),
-        //         'nisn' => $request->nisn,
-        //         'kelas' => $request->kelas,
-        //         'name' => $request->name,
-        //         'email' => $request->nisn . '@smkn3sby.com',
-        //         'password' => Hash::make('smkn3sby'),
-        //         'jk' => $request->jk,
-        //         'alamat' => '',
-        //         'tempat' => '',
-        //         'ttl' => '',
-        //         'pelanggaran' => $request->pelanggaran,
-        //         'avatar' => '',
-        //     ]);
-        // } else {
-        //     $hola = User::create([
-        //         'user_uuid' =>  Uuid::generate(4),
-        //         'nisn' => $request->nisn,
-        //         'kelas' => $request->kelas,
-        //         'name' => $request->name,
-        //         'email' => $request->nisn . '@smkn3sby.com',
-        //         'password' => Hash::make('smkn3sby'),
-        //         'jk' => $request->jk,
-        //         'alamat' => '',
-        //         'tempat' => '',
-        //         'ttl' => '',
-        //         'pelanggaran' => $request->pelanggaran,
-        //         'avatar' => '',
-
-        //     ]);
-        //     $hola->assignRole('siswa');
-        // }
-        // $qrcode = QrCode::size(400)->generate('https://127.0.0.1:8000/laporan/' . $hola->uuid);\
-        // $url = 'https://127.0.0.1:8000/laporan/' . $hola->uuid;
-        // $qrcode =  DNS2D::getBarcodeHtml('https://127.0.0.0.1/laporan/' . $hola->user_uuid, 'QRCODE', 5, 5);
-        // if ($request->file($qrcode)) {
-        //     $cok = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $request->file($qrcode)->getClientOriginalName());
-        //     $request->file($qrcode)->move(public_path('gambar'), $cok);
-        // }
-        // gambarqr::create([
-        //     'user_id' => $hola->id,
-        //     'gambarqr' => $cok,
-        // ]);
         $hola = User::updateOrCreate(['nisn' => $request->nisn], [
             'user_uuid' => Uuid::generate(4),
             // 'nisn' => $request->nisn,
@@ -129,12 +88,30 @@ class SiswaController extends Controller
             // 'pelanggaran' => $request->pelanggaran,
             'avatar' => '',
         ]);
-        foreach ($request->pelanggaran as $pel) {
-            $pel->pelanggaran_siswa()->create([
-                'nama' => $pel,
+        $hola->PelanggaranSiswa()->truncate();
+        // $lohe = Pelanggaran::where('nama', $request->pelanggaran)->get();
+        foreach ($request->pelanggaran as $ilmu) {
+            $hola->PelanggaranSiswa()->create([
+                'user_uuid'  => $hola->user_uuid,
+                // 'nomor' => $lohe->nomor,
+                'nama' => $ilmu,
+                // 'point' => $lohe->point
             ]);
         }
+        $hola->PointSiswa()->truncate();
+        foreach ($request->point as $p) {
+            $hola->PointSiswa()->create([
+                'user_uuid' => $hola->user_uuid,
+                'point' => $p
+            ]);
+        }
+        // foreach ($lohe->point as $no) {P
+        //     $hola->PelanggaranSiswa()->create([
+        //         'point' => $no
+        //     ]);
+        // }
         $hola->assignRole('siswa');
+        // @dd($hola);
         return redirect()->route('data-siswa');
     }
 
@@ -155,13 +132,15 @@ class SiswaController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($name)
+    public function edit($id)
     {
         return view('partisi.edit-siswa', [
             'admin' => User::find(auth()->id()),
             'kelas' => Kelas::all(),
             'pelanggaran' => Pelanggaran::all(),
-            'siswa' => User::where('name', $name)->get()
+            'siswa' => User::where('id', $id)->get(),
+            'pelsis' => PelanggaranSiswa::where('user_id', $id)->get(),
+            'pointsis' => PointSiswa::where('user_id', $id)->get()
         ]);
     }
 
@@ -175,27 +154,39 @@ class SiswaController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'id' => 'required',
             'nisn' => 'required',
             'name' => 'required',
             'kelas' => 'required',
             'jk' => 'required',
-            'pelanggaran' => 'nullable',
+            'pelanggaran' => ['nullable', 'array'],
+            'pelanggaran.*' => ['nullable', 'string'],
         ]);
-        User::where('id', $request->id)->update([
+        $hola = User::updateOrCreate(['nisn' => $request->nisn], [
             'user_uuid' => Uuid::generate(4),
-            'nisn' => $request->nisn,
+            // 'nisn' => $request->nisn,
             'kelas' => $request->kelas,
             'name' => $request->name,
             'email' => $request->nisn . '@smkn3sby.com',
-            // 'password' => Hash::make('smkn3sby'),
+            'password' => Hash::make('smkn3sby'),
             'jk' => $request->jk,
-            // 'alamat' => '',
-            // 'tempat' => '',
-            // 'ttl' => '',
-            'pelanggaran' => $request->pelanggaran,
-            // 'avatar' => '',
+            'alamat' => '',
+            'tempat' => '',
+            'ttl' => '',
+            // 'pelanggaran' => $request->pelanggaran,
+            'avatar' => '',
         ]);
+        // $hola->PelanggaranSiswa()->truncate();
+        // $lohe = Pelanggaran::where('nama', $ilmu)->get();
+        foreach ($request->pelanggaran as $ilmu) {
+            $hola->PelanggaranSiswa()->create([
+                // 'nomor' => $lohe->nomor,
+                'nama' => $ilmu,
+                // 'point' => $lohe->point,
+            ]);
+        }
+
+        $hola->assignRole('siswa');
+        // @dd($hola);
         return redirect()->route('data-siswa');
     }
 
@@ -239,6 +230,12 @@ class SiswaController extends Controller
         // Session::flash('sukses','Data Siswa Berhasil Diimport!');
 
         // alihkan halaman kembali
-        return redirect()->back();
+        return redirect()->route('data-siswa');
+    }
+    public function view_import()
+    {
+        return view('partisi.import-siswa', [
+            'admin' => User::find(auth()->id()),
+        ]);
     }
 }

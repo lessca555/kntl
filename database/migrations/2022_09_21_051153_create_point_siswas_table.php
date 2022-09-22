@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePelanggaransTable extends Migration
+class CreatePointSiswasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePelanggaransTable extends Migration
      */
     public function up()
     {
-        Schema::create('pelanggarans', function (Blueprint $table) {
+        Schema::create('point_siswas', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor');
-            $table->string('nama');
-            // $table->string('point');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('user_uuid');
+            $table->string('point')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePelanggaransTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pelanggarans');
+        Schema::dropIfExists('point_siswas');
     }
 }

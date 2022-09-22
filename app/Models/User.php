@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Kelas;
+use App\Models\PointSiswa;
 use App\Models\Pelanggaran;
 use App\Models\PelanggaranSiswa;
 use Spatie\Permission\Traits\HasRoles;
@@ -30,8 +31,9 @@ class User extends Authenticatable
         'jk',
         'alamat',
         'tlpn',
-        // 'tempat',
-        // 'ttl',
+        'tempat',
+        'ttl',
+        'avatar',
         // 'pelanggaran',
     ];
 
@@ -65,8 +67,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(gambarqr::class);
     }
-    public function pelanggaran_siswa()
+    public function PelanggaranSiswa()
     {
-        return $this->hasMany(PelanggaranSiswa::class);
+        return $this->belongsToMany(PelanggaranSiswa::class);
+    }
+    public function PointSiswa()
+    {
+        return $this->hasMany(PointSiswa::class);
     }
 }

@@ -20,11 +20,11 @@
                                 <input type="text" class="form-control form-control-rounded" id="input-6"
                                     placeholder="Masukkan Nama Pelanggaran" name="nama" value="{{ $pel->nama }}">
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="input-2">Point</label>
                                 <input type="number" class="form-control form-control-rounded" id="input-2"
                                     placeholder="Masukkan Point Pelanggaran" name="point" value="{{ $pel->point }}">
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <button type="submit" class="btn btn-light btn-round px-5"><i class="icon-lock"></i>
                                     Submit</button>

@@ -28,6 +28,104 @@
     <link href="{{ asset('assets/css/sidebar-menu.css') }}" rel="stylesheet" />
     <!-- Custom Style-->
     <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet" />
+    <style>
+        /* Style the Image Used to Trigger the Modal */
+        #myImg {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #myImg:hover {
+            opacity: 0.7;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content (Image) */
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        /* Caption of Modal Image (Image Text) - Same Width as the Image */
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        /* Add Animation - Zoom in the Modal */
+        .modal-content,
+        #caption {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            position: absolute;
+            top: 90px;
+            right: 100px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 100% Image Width on Smaller Screens */
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
 
 </head>
 
@@ -109,29 +207,3 @@
 </body>
 
 </html>
-<script>
-    $(document).ready(function() {
-        var i = 1;
-        $('#add2').click(function() {
-            i++;
-            $('#dynamic_field2').append('<tr id="row2' + i +
-                '"><td><select name="pelanggaran[]" class="form-control name_list"><option value="">-PILIH PELANGGARAN-</option><?php $pelanggaran = App\Models\Pelanggaran::all(); foreach($pelanggaran as $d ) {?><option value="{{ $p->nomor }} - {{ $p->nama }}">{{ $p->nomor }} -{{ $p->nama }} < /option><?php }?></select > </td><td><button type="button" name="remove" id="' +
-                i + '" class="btn btn-danger btn_remove2">X</button></td></tr>');
-        });
-        $(document).on('click', '.btn_remove2', function() {
-            var button_id = $(this).attr("id");
-            $('#row2' + button_id + '').remove();
-        });
-        $('#submit').click(function() {
-            $.ajax({
-                url: "name.php",
-                method: "POST",
-                data: $('#add_name').serialize(),
-                success: function(data) {
-                    alert(data);
-                    $('#add_name')[0].reset();
-                }
-            });
-        });
-    });
-</script>

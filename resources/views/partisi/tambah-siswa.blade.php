@@ -43,20 +43,23 @@
                                         {{ $p->nama }}</option>
                                 @endforeach
                             </select> --}}
-                            <table class="table table-bordered" id="dynamic_field">
+                            <table class="table table-bordered" id="dynamicTable">
                                 <tr>
                                     <td>
                                         <select name="pelanggaran[]" class="form-control form-control-rounded name_list">
-                                            <option value="">- PILIH Pelanggaran-</option>
+                                            <option value="-">- PILIH Pelanggaran-</option>
                                             @foreach ($pelanggaran as $p)
-                                                <option value="{{ $p->nomor }} - {{ $p->nama }}">
+                                                <option value=" {{ $p->nomor }} - {{ $p->nama }}">
                                                     {{ $p->nomor }} -
                                                     {{ $p->nama }}</option>
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td><button class="btn btn-success" type="button" id="add-transaksi">
-                                            <span class="mdi mdi-plus-circle"></span></td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-rounded" name="point[]">
+                                    </td>
+                                    <td><button type="button" name="add" id="add" class="btn btn-success">Add
+                                            More</button></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -69,30 +72,20 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var i = 0;
+
+        $("#add").click(function() {
+
+            ++i;
+
+            $("#dynamicTable").append(
+                '<tr><td><select name="pelanggaran[]" class="form-control form-control-rounded name_list"><option value="-">- PILIH Pelanggaran-</option> <?php $pelanggaran = App\Models\Pelanggaran::all(); foreach($pelanggaran as $p) {?> ($pelanggaran as $p)<option value="{{ $p->nomor }} - {{ $p->nama }}">{{ $p->nomor }} - {{ $p->nama }}</option> <?php } ?> </select></td><td><input type="number" class="form-control form-control-rounded" name="point[]"></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>'
+            );
+        });
+
+        $(document).on('click', '.remove-tr', function() {
+            $(this).parents('tr').remove();
+        });
+    </script>
 @endsection
-<script>
-    $(document).ready(function() {
-        var i = 1;
-        $('#add2').click(function() {
-            i++;
-            $('#dynamic_field').append('<tr id="row2' + i +
-                '"><td><select name="pelanggaran[]" class="form-control form-control-rounded name_list"><option value="">-PILIH PELANGGARAN-</option><?php $keilmuan = App\Models\Pelanggaran::all(); foreach($keilmuan as $d ) {?><option value="{{ $d->nomor }} - {{ $d->nama }}">{{ $d->nomor }} - {{ $d->nama }}</option><?php }?></select></td><td><button type="button" name="remove" id="' +
-                i + '" class="btn btn-danger btn_remove2">X</button></td></tr>');
-        });
-        $(document).on('click', '.btn_remove2', function() {
-            var button_id = $(this).attr("id");
-            $('#row2' + button_id + '').remove();
-        });
-        $('#submit').click(function() {
-            $.ajax({
-                url: "name.php",
-                method: "POST",
-                data: $('#add_name').serialize(),
-                success: function(data) {
-                    alert(data);
-                    $('#add_name')[0].reset();
-                }
-            });
-        });
-    });
-</script>

@@ -13,33 +13,41 @@
                     <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('kelas-admin') }}">
+                    <i class="zmdi zmdi-balance"></i> <span>Kelas</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('data-siswa') }}">
+                    <i class="zmdi zmdi-assignment-account"></i> <span>Data Siswa</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('pelanggaran-siswa') }}">
+                    <i class="zmdi zmdi-alert-triangle"></i> <span>Jenis Pelanggaran</span>
+                </a>
+            </li>
+        @else
+            <li>
+                <a href="{{ route('dashmin') }}">
+                    <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('profile') }}">
+                    <i class="zmdi zmdi-assignment-account"></i> <span>Profile</span>
+                </a>
+            </li>
         @endif
 
-
-        <li>
-            <a href="{{ route('kelas-admin') }}">
-                <i class="zmdi zmdi-balance"></i> <span>Kelas</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="{{ route('data-siswa') }}">
-                <i class="zmdi zmdi-assignment-account"></i> <span>Data Siswa</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="{{ route('pelanggaran-siswa') }}">
-                <i class="zmdi zmdi-alert-triangle"></i> <span>Jenis Pelanggaran</span>
-            </a>
-        </li>
-
-        <li>
+        {{-- <li>
             <a href="calendar.html">
                 <i class="zmdi zmdi-accounts-list"></i> <span>User</span>
-                {{-- <small class="badge float-right badge-light">New</small> --}}
             </a>
-        </li>
+        </li> --}}
 
         <li>
             <a href="{{ route('logout') }}">

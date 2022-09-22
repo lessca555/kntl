@@ -12,8 +12,8 @@
                     <a href="{{ route('tambah-siswa') }}" class="btn btn-success card-title"
                         style="float: right;margin-left:10px;"><i class="fa fa-plus"></i> Tambah
                         Siswa</a>
-                    <a href="" class="btn btn-success card-title" style="float: right;margin-left:10px;"><i
-                            class="fa fa-upload"></i>
+                    <a href="{{ route('view-import-siswa') }}" class="btn btn-success card-title"
+                        style="float: right;margin-left:10px;"><i class="fa fa-upload"></i>
                         Upload
                         Siswa</a>
                     <a href="{{ route('export-siswa') }}" class="btn btn-success card-title" style="float: right"><i
@@ -45,7 +45,7 @@
                                         <td>{!! DNS2D::getBarcodeHtml('https://127.0.0.0.1/laporan/' . $lo->user_uuid, 'QRCODE', 5, 5) !!}
                                         </td>
                                         <td>
-                                            <a href="/admin/siswa/edit/{{ $lo->name }}" class="btn btn-warning"><i
+                                            <a href="/admin/siswa/edit/{{ $lo->id }}" class="btn btn-warning"><i
                                                     class="fa fa-pencil"></i> Edit</a>
                                             <a href="/admin/siswa/delete/{{ $lo->id }}" class="btn btn-danger"><i
                                                     class="fa fa-trash"></i> Hapus</a>

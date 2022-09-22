@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\PelanggaranSiswa;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pelanggaran extends Model
 {
@@ -14,4 +16,8 @@ class Pelanggaran extends Model
     {
         return $this->hasMany(User::class);
     }
+    // public function PelanggaranSiswa()
+    // {
+    //     return $this->belongsToMany(PelanggaranSiswa::class);
+    // }
 }

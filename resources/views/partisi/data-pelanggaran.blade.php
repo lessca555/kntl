@@ -20,7 +20,7 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Nomor</th>
                                     <th scope="col">Nama Pelanggaran</th>
-                                    <th scope="col">Point Pelanggaran</th>
+                                    {{-- <th scope="col">Point Pelanggaran</th> --}}
                                     <th scope="col">OPSI</th>
                                 </tr>
                             </thead>
@@ -30,7 +30,7 @@
                                         <th scope="row">{{ $pel + $pelanggar->firstItem() }}</th>
                                         <td>{{ $pela->nomor }}</td>
                                         <td>{{ $pela->nama }}</td>
-                                        <td>{{ $pela->point }}</td>
+                                        {{-- <td>{{ $pela->point }}</td> --}}
                                         <td>
                                             <a href="/admin/pelanggaran/edit/{{ $pela->nama }}" class="btn btn-warning"><i
                                                     class="fa fa-pencil"></i> Edit</a>
