@@ -89,8 +89,19 @@ class LoginController extends Controller
             'ttl' => 'required',
             'tlpn' => 'required',
             'password' => 'required|min:8|confirmed',
-            'avatar' => 'nullable',
+            'avatar' => 'image',
         ]);
+
+        $user = User::find(auth()->id());
+        if ($image = $request->file('avatar')) {
+            $destinationPath = 'avatar/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $user->avatar = "$profileImage";
+        }else{
+            unset($user->avatar);
+        }
+
         if ($request->avatar != " ") {
             $kin = $request->user()->update([
                 'email' => $request->email,
@@ -99,13 +110,13 @@ class LoginController extends Controller
                 'tempat' => $request->tempat,
                 'ttl' => $request->ttl,
                 'password' => Hash::make($request->password),
-                // 'avatar' => $filename,
+                'avatar' => $profileImage,
             ]);
         } else {
-            if ($request->file('avatar')) {
-                $filename = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $request->file('avatar')->getClientOriginalName());
-                $request->file('avatar')->move(public_path('avatar'), $filename);
-            }
+            // if ($request->file('avatar')) {
+            //     $filename = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $request->file('avatar')->getClientOriginalName());
+            //     $request->file('avatar')->move(public_path('avatar'), $filename);
+            // }
             $kin = $request->user()->update([
                 'email' => $request->email,
                 'alamat' =>  $request->alamat,
@@ -113,10 +124,9 @@ class LoginController extends Controller
                 'tempat' => $request->tempat,
                 'ttl' => $request->ttl,
                 'password' => Hash::make($request->password),
-                'avatar' => $filename,
+                'avatar' => $profileImage,
             ]);
         }
-        @dd('$request->user()');
-        // return redirect()->back();
+        return redirect()->back();
     }
 }

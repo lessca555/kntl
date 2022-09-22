@@ -37,5 +37,22 @@ class UserSeeders extends Seeder
             'avatar' => 'yoda.png'
         ]);
         $dahlah->assignRole('superadmin');
+
+        $siswa = User::create([
+            'user_uuid' => Uuid::generate(4),
+            'nisn' => '1',
+            'kelas' => '1',
+            'name' => 'siswanto',
+            'email' => 'siswa@siswa.com',
+            'password' => Hash::make('12345678'),
+            'jk' => 'L',
+            'alamat' => '',
+            'tlpn' => '',
+            'tempat' => '',
+            'ttl' => '',
+            // 'pelanggaran' => '0',
+            'avatar' => 'yoda.png'
+        ]);
+        $siswa->assignRole('siswa');
     }
 }

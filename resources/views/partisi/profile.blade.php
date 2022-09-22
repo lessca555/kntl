@@ -9,9 +9,7 @@
                 </div>
                 <div class="card-body pt-5">
                     <img id="myImg"
-                        src="@if ($admin->avatar == null) {{ asset('assets/images/yoda.png') }}
-                    @else
-                    {{ asset('avatar/' . $admin->avatar) }} @endif"
+                        src="{{ url('avatar') }}/{{ Auth::user()->avatar }}"
                         alt="profile-image" class="profile">
                     <div id="myModal" class="modal">
 
