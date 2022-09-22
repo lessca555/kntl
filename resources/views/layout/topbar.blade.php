@@ -39,7 +39,11 @@
                     <li class="dropdown-divider"></li>
                     <li class="dropdown-item"><i class="zmdi zmdi-account mr-2"></i> Account</li>
                     <li class="dropdown-divider"></li>
-                    <li class="dropdown-item"><a href="{{ route('logout') }}"><i class="icon-power mr-2"></i> Logout</a>
+                    @if ($admin->roles()->first()->name == 'superadmin')
+                        <li class="dropdown-item"><a href="{{ route('logout-admin') }}"><i class="icon-power mr-2"></i> Logout</a>
+                    @else
+                        <li class="dropdown-item"><a href="{{ route('login-siswa') }}"><i class="icon-power mr-2"></i> Logout</a>
+                    @endif
                     </li>
                 </ul>
             </li>

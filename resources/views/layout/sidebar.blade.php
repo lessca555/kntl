@@ -32,7 +32,7 @@
             </li>
         @else
             <li>
-                <a href="{{ route('dashmin') }}">
+                <a href="{{ route('dasher') }}">
                     <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
@@ -48,12 +48,19 @@
                 <i class="zmdi zmdi-accounts-list"></i> <span>User</span>
             </a>
         </li> --}}
-
+        @if ($admin->roles()->first()->name == 'superadmin')
         <li>
-            <a href="{{ route('logout') }}">
+            <a href="{{ route('logout-admin') }}">
                 <i class="fa fa-sign-out"></i> <span>logout</span>
             </a>
         </li>
+        @else
+        <li>
+            <a href="{{ route('logout-siswa') }}">
+                <i class="fa fa-sign-out"></i> <span>logout</span>
+            </a>
+        </li>
+        @endif
 
         {{-- <li>
             <a href="login.html" target="_blank">

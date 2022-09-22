@@ -32,7 +32,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $user = User::find(auth()->id());
             if ($user->roles()->first()->name == 'siswa') {
-                return redirect()->route('dashmin');
+                return redirect()->route('dasher');
             } else {
                 return redirect()->back()->with('gagal', 'Anda Bukan Siswa Disini');
             }

@@ -48,12 +48,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/pelanggaran/edit/{pela:nama}', [PelanggaranController::class, 'edit']);
         Route::post('/admin/pelanggaran/edit', [PelanggaranController::class, 'update'])->name('update-pelanggaran');
         Route::get('/admin/pelanggaran/hapus/{pela:id}', [PelanggaranController::class, 'destroy']);
-        Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
+        Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout-admin');
     });
     Route::middleware(['role:siswa'])->group(function () {
-        Route::get('/dashboard', [LoginController::class, 'dashmin'])->name('dashmin');
+        Route::get('/dashboard', [LoginController::class, 'dashmin'])->name('dasher');
         Route::get('/profile', [LoginController::class, 'profile'])->name('profile');
         Route::post('/profile', [LoginController::class, 'update_profile'])->name('update-profile');
+        Route::get('/logout', [LoginController::class, 'logout'])->name('logout-siswa');
     });
     // Route::get('/admin/dashboard', [LoginController::class, 'dashmin'])->name('dashmin');
     //     Route::get('/admin/logout', [LoginController::class, 'logout'])->name('logout');
